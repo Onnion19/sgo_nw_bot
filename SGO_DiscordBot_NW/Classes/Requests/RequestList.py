@@ -59,7 +59,7 @@ class RequestList:
            self.Requests[item] = [Request(Requester, Ammount)]#Add a new entry to the dictionary
 
     def RemoveRequest(self, item, Requester, Ammount=999999): 
-        if(not self.ItemExists(item)):
+        if(Ammount < 0 or not self.ItemExists(item)):
             return
         
         index = self.RequesterIndex(item, Requester)
