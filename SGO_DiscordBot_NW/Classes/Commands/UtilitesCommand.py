@@ -5,6 +5,7 @@ import random
 import BotUtils.SystemUtils as S_Utils
 import BotUtils.DiscordUtils as D_Utils
 import discord
+import os
 
 """
 Submodule / Commands for handle the stock. It should: 
@@ -15,6 +16,7 @@ class UtilitiesCommand(CommandBase):
         CommandBase.__init__(self)
         self.Requests = Requests()
         self.FileName = "SGO_NW_CraftRequests.csv"
+        os.system("copy SGO_NW_CraftRequests.csv SGO_NW_CraftRequestsBackUp.csv")
 
     def InitializeModule(self):
         CommandBase.InitializeModule(self)
@@ -27,7 +29,6 @@ class UtilitiesCommand(CommandBase):
             self.Requests.AddRequest(item.lower(), ctx.author.name  , int(ammount))
             self.Requests.Serialize(self.FileName)
             await ctx.message.add_reaction('👍')
-            await ctx.send(D_Utils.SendMessage(ctx.author.name));
 
         @self.CommandBot.command(aliases=['ListRequests','listRequests','listrequests','lr'])
         async def GetAllRequests(ctx, *args):
@@ -42,16 +43,32 @@ class UtilitiesCommand(CommandBase):
 
         @self.CommandBot.command(aliases=['backup','BackUp','bu','file'])
         async def GetFile(ctx, *args):
-                await ctx.send(file = discord.File(self.FileName));
+                await ctx.send(file = discord.File(self.FileName))
 
-        @self.CommandBot.command(aliases=['CloseRequest', 'closeRequest','closerequest', 'cr'])
-        async def CloseRequests(ctx, item, requester, ammount=999999):
-            if(ammount < 0):
+        @self.CommandBot.command(aliases=['closeRequest','closerequest', 'cr'])
+        async def CloseRequest(ctx, *args):
+            if(len(args) < 2):
                 return
 
+            item = args[0]
+            requester = S_Utils.TupleToString(args[1:])
+            self.Requests.RemoveRequest(item.lower(), requester)
+            self.Requests.Serialize(self.FileName)
+            await ctx.message.add_reaction('👍')
+
+        @self.CommandBot.command(aliases=['deliverRequest', 'deliverrequest', 'dr'])
+        async def DeliverRequest(ctx, *args):
+            if(len(args) < 3):
+                return
+
+            item = args[0]
+            ammount = int(args[1])
+            requester = S_Utils.TupleToString(args[2:])
             self.Requests.RemoveRequest(item.lower(), requester, ammount)
             self.Requests.Serialize(self.FileName)
             await ctx.message.add_reaction('👍')
+
+
 
         @self.CommandBot.command(aliases=['man', 'ayuda','h'])
         async def DisplayHelp(ctx, *args):
