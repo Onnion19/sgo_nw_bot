@@ -17,7 +17,7 @@ class UtilitiesCommand(CommandBase):
         self.Requests = Requests()
         self.FileName = "SGO_NW_CraftRequests.csv"
         self.Requests.InitFromFile(self.FileName)
-        os.system("copy SGO_NW_CraftRequests.csv SGO_NW_CraftRequestsBackUp.csv")
+        os.system("copy SGO_NW_CraftRequests.csv SGO_NW_CraftRequests.csv.backup")
 
     def InitializeModule(self):
         CommandBase.InitializeModule(self)
@@ -25,10 +25,11 @@ class UtilitiesCommand(CommandBase):
         @self.CommandBot.command(aliases=['request', 'Request','r'])
         async def AddRequestCommand(ctx, *args):
             if(len(args) < 2):
+                await ctx.send(D_Utils.SendMessage("Missing arguments"))
                 return
             ammount = args[0]
             if(not ammount.isnumeric()):
-                S_Utils.sysPrint("Incorrect ammount")
+                await ctx.send(D_Utils.SendMessage("Incorrect format"))
                 return
             item = S_Utils.TupleToString(args[1:],"_")
             self.Requests.AddRequest(item.lower(), ctx.author.name  , int(ammount))
@@ -53,6 +54,7 @@ class UtilitiesCommand(CommandBase):
         @self.CommandBot.command(aliases=['closeRequest','closerequest', 'cr'])
         async def CloseRequest(ctx, *args):
             if(len(args) < 2):
+                await ctx.send(D_Utils.SendMessage("Missing arguments"))
                 return
 
             item = args[0]
@@ -64,6 +66,7 @@ class UtilitiesCommand(CommandBase):
         @self.CommandBot.command(aliases=['deliverRequest', 'deliverrequest', 'dr'])
         async def DeliverRequest(ctx, *args):
             if(len(args) < 3):
+                await ctx.send(D_Utils.SendMessage("Missing arguments"))
                 return
 
             item = args[0]
@@ -83,6 +86,8 @@ class UtilitiesCommand(CommandBase):
                     path +=".tmp"
                 else:
                     path = args[0]
+            else:
+                path += ".backup"
 
             self.Requests.InitFromFile(path)
             await ctx.message.add_reaction('👍')
