@@ -16,16 +16,21 @@ class UtilitiesCommand(CommandBase):
         CommandBase.__init__(self)
         self.Requests = Requests()
         self.FileName = "SGO_NW_CraftRequests.csv"
+        self.Requests.InitFromFile(self.FileName)
         os.system("copy SGO_NW_CraftRequests.csv SGO_NW_CraftRequestsBackUp.csv")
 
     def InitializeModule(self):
         CommandBase.InitializeModule(self)
 
         @self.CommandBot.command(aliases=['request', 'Request','r'])
-        async def AddRequestCommand(ctx, item, ammount):
+        async def AddRequestCommand(ctx, *args):
+            if(len(args) < 2):
+                return
+            ammount = args[0]
             if(not ammount.isnumeric()):
                 S_Utils.sysPrint("Incorrect ammount")
                 return
+            item = S_Utils.TupleToString(args[1:],"_")
             self.Requests.AddRequest(item.lower(), ctx.author.name  , int(ammount))
             self.Requests.Serialize(self.FileName)
             await ctx.message.add_reaction('👍')
@@ -75,18 +80,30 @@ class UtilitiesCommand(CommandBase):
             path = self.FileName
             if(len(args) >= 1):
                 if(args[0] == "last"):
-                    path +=".tmp";
+                    path +=".tmp"
                 else:
                     path = args[0]
 
-            self.Requests.InitFromFile(path);
+            self.Requests.InitFromFile(path)
+            await ctx.message.add_reaction('👍')
+
+        @self.CommandBot.command(aliases=['clear', 'cl'])
+        async def ClearAll(ctx, *args):
+            if(ctx.author.name != "Onnion" and ctx.author.name != "Yirak"):
+                await ctx.send(D_Utils.SendMessage("You have no permissions, ask Onnion or Yirak"))
+                return
+
+            self.Requests.WipeData()
             await ctx.message.add_reaction('👍')
 
         @self.CommandBot.command(aliases=['man', 'ayuda','h'])
         async def DisplayHelp(ctx, *args):
-            s = ".request [item] [ammount] for requesting a item.\n\t Example: .request Arroz 150\n\n"
-            s += ".listRequest [Optional: item] see all the requests for all items, or a filtered version if an item is specified.\n\t Example: .listRequest or .listRequest Arroz\n\n"
-            s += ".closeRequest [item] [requester] [Optional: ammount] close a request made for user 'requester', provide an ammount if only part of the request has been satisfied.\n\t Example: .closeRequest Arroz Onnion or .closeRequest Arroz Onnion 5\n\n"
-            s += ".backup to get a backup file in .csv format."
+            s = ".request (.r) [ammount] [item] for requesting a item.\n\t Example: .request 150 Arroz con gambas\n\n"
+            s += ".listRequest (.lr) [Optional: item] see all the requests for all items, or a filtered version if an item is specified.\n\t Example: .listRequest or .listRequest Arroz\n\n"
+            s += ".deliverRequest (.dr) [item] [ammount] [requester] delivers the ammount if items to the requester.\n\t Example .dr Arroz 60 Onnion\n\n"
+            s += ".closeRequest (.cr) [item] [requester]  close a request made for user 'requester'.\n\t Example: .closeRequest Arroz Onnion\n\n"
+            s += ".backup to get a backup file in .csv format.\n\n"
+            s += ".recover [last] to recover data as a rollback. By default it recovers from the point when the bot was booted last time. If Last parameter is specified, it will recover from the last command.\n\t Example: .recover or .recover last\n\n"
+            s += ".clear wipes all data\n"
             await ctx.send(D_Utils.SendMessage(s))
 

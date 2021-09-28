@@ -95,3 +95,6 @@ class RequestList:
                 self.Requests[item].pop(index)
                 if(len(self.Requests[item]) == 0):
                     self.Requests.pop(item);
+
+    def WipeData(self):
+        self.Requests = {}
