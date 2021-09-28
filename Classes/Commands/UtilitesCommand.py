@@ -69,8 +69,8 @@ class UtilitiesCommand(CommandBase):
                 await ctx.send(D_Utils.SendMessage("Missing arguments"))
                 return
 
-            item = args[0]
-            ammount = int(args[1])
+            ammount = int(args[0])
+            item = args[1]
             requester = S_Utils.TupleToString(args[2:])
             self.Requests.RemoveRequest(item.lower(), requester, ammount)
             self.Requests.Serialize(self.FileName)
@@ -105,7 +105,7 @@ class UtilitiesCommand(CommandBase):
         async def DisplayHelp(ctx, *args):
             s = ".request (.r) [ammount] [item] for requesting a item.\n\t Example: .request 150 Arroz con gambas\n\n"
             s += ".listRequest (.lr) [Optional: item] see all the requests for all items, or a filtered version if an item is specified.\n\t Example: .listRequest or .listRequest Arroz\n\n"
-            s += ".deliverRequest (.dr) [item] [ammount] [requester] delivers the ammount if items to the requester.\n\t Example .dr Arroz 60 Onnion\n\n"
+            s += ".deliverRequest (.dr) [ammount] [item] [requester] delivers the ammount if items to the requester.\n\t Example .dr Arroz 60 Onnion\n\n"
             s += ".closeRequest (.cr) [item] [requester]  close a request made for user 'requester'.\n\t Example: .closeRequest Arroz Onnion\n\n"
             s += ".backup to get a backup file in .csv format.\n\n"
             s += ".recover [last] to recover data as a rollback. By default it recovers from the point when the bot was booted last time. If Last parameter is specified, it will recover from the last command.\n\t Example: .recover or .recover last\n\n"
