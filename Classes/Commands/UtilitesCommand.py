@@ -17,7 +17,7 @@ class UtilitiesCommand(CommandBase):
         self.Requests = Requests()
         self.FileName = "SGO_NW_CraftRequests.csv"
         self.Requests.InitFromFile(self.FileName)
-        os.system("copy SGO_NW_CraftRequests.csv SGO_NW_CraftRequests.csv.backup")
+        os.system("cp SGO_NW_CraftRequests.csv SGO_NW_CraftRequests.csv.backup")
 
     def InitializeModule(self):
         CommandBase.InitializeModule(self)

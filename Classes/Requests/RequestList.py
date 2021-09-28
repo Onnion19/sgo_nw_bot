@@ -31,7 +31,7 @@ class RequestList:
         return s
 
     def Serialize(self, filePath):
-        os.system(f'copy {filePath} {filePath}.tmp')
+        os.system(f'cp {filePath} {filePath}.tmp')
         file = open(filePath, 'w+', encoding="utf-8")
         if(file is None):
             S_utils.SysPrint("Can't open file" + filePath, S_utils.PrintDecorators.ERROR)
