@@ -1,7 +1,6 @@
 .vs/
 *.sln
 *.pyproj
-*.csv
 __pycache__/
 *.pem
 *.ppk
