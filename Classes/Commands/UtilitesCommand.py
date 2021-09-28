@@ -68,7 +68,19 @@ class UtilitiesCommand(CommandBase):
             self.Requests.Serialize(self.FileName)
             await ctx.message.add_reaction('👍')
 
+        
 
+        @self.CommandBot.command(aliases=['recover', 'rc'])
+        async def RecoverFromFile(ctx, *args):
+            path = self.FileName
+            if(len(args) >= 1):
+                if(args[0] == "last"):
+                    path +=".tmp";
+                else:
+                    path = args[0]
+
+            self.Requests.InitFromFile(path);
+            await ctx.message.add_reaction('👍')
 
         @self.CommandBot.command(aliases=['man', 'ayuda','h'])
         async def DisplayHelp(ctx, *args):

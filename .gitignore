@@ -2,4 +2,6 @@
 *.sln
 *.pyproj
 *.csv
-*/__pycache__/
+__pycache__/
+*.pem
+*.ppk

@@ -1,6 +1,7 @@
 
 from Classes.Requests.Request import Request
 import BotUtils.SystemUtils as S_utils
+import os
 
 class RequestList: 
 
@@ -30,12 +31,36 @@ class RequestList:
         return s
 
     def Serialize(self, filePath):
+        os.system(f'copy {filePath} {filePath}.tmp')
         file = open(filePath, 'w+', encoding="utf-8")
         if(file is None):
             S_utils.SysPrint("Can't open file" + filePath, S_utils.PrintDecorators.ERROR)
             return
         file.write(self.ToString(','))
         file.close()
+
+    def InitFromFile(self, filePath):
+        file = open(filePath, 'r', encoding = "utf-8")
+        if(file is None):
+            S_utils.SysPrint("Can't open file" + filePath, S_utils.PrintDecorators.ERROR)
+            return
+
+        self.Requests = {}
+        currentItem = ""
+        lines = file.readlines()
+        for line in lines:
+            l = line.split()
+            if(len(l) > 0): # there is content
+                
+                if(l[0][0] != ','): #it's an item
+                    currentItem = l[0]
+                else: #is a request
+                    request = l[0].split(',')
+                    if(len(request) == 3):
+                        self.AddRequest(currentItem,request[1] , int(request[2]))
+                    else:
+                        S_utils.SysPrint(f'Error cant process {request}', S_utils.PrintDecorators.ERROR)
+                    
 
     def ItemExists(self, item) -> str:
         return self.Requests.get(item)
@@ -67,6 +92,6 @@ class RequestList:
             request = self.Requests[item][index]
             request.ChangeQuantity(-Ammount)
             if(request.GetQuantity() < 1):
-                self.Requests[item].pop(index);
+                self.Requests[item].pop(index)
                 if(len(self.Requests[item]) == 0):
                     self.Requests.pop(item);
