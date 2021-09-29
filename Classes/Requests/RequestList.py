@@ -20,7 +20,7 @@ class RequestList:
         return s
 
     def ItemRequestString(self, item, separator=','):
-        s = "\n"
+        s = ""
         if(self.Requests.get(item)):
             serializedRequests = ""
             for request in self.Requests[item]:
@@ -94,7 +94,16 @@ class RequestList:
             if(request.GetQuantity() < 1):
                 self.Requests[item].pop(index)
                 if(len(self.Requests[item]) == 0):
-                    self.Requests.pop(item);
+                    self.Requests.pop(item)
 
     def WipeData(self):
         self.Requests = {}
+
+    def SearchUserRequests(self, user) -> str:
+        s = ""
+        for item , requestList in self.Requests.items():
+            for request in requestList:
+                if(request.GetRequester() == user):
+                    s += "\n\t" + item + "\t" + str(request.GetQuantity())
+
+        return s

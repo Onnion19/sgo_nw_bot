@@ -39,9 +39,15 @@ class UtilitiesCommand(CommandBase):
         @self.CommandBot.command(aliases=['ListRequests','listRequests','listrequests','lr'])
         async def GetAllRequests(ctx, *args):
                 if(len(args) > 0):
-                    s = self.Requests.ItemRequestString(args[0].lower(),"\t")
+                    #check if the param to filter is an existing user
+                    userName = S_Utils.TupleToString(args)
+                    s = self.Requests.SearchUserRequests(userName)
+                    if(s != ""):#found user requests
+                        s = "Request made by user " + userName + s
+                    else:#user was not found as a requester, maybe it's an item
+                        s = self.Requests.ItemRequestString(args[0].lower(),"\t")
                     if(s == ""):
-                        s+= "Hurrah! there are no more requests for: " + args[0]
+                        s = "No user or item found"
                     await ctx.send(D_Utils.SendMessage(s))
                 else:
                     await ctx.send(D_Utils.SendMessage(self.Requests.ToString("\t")))
@@ -104,7 +110,7 @@ class UtilitiesCommand(CommandBase):
         @self.CommandBot.command(aliases=['man', 'ayuda','h'])
         async def DisplayHelp(ctx, *args):
             s = ".request (.r) [ammount] [item] for requesting a item.\n\t Example: .request 150 Arroz con gambas\n\n"
-            s += ".listRequest (.lr) [Optional: item] see all the requests for all items, or a filtered version if an item is specified.\n\t Example: .listRequest or .listRequest Arroz\n\n"
+            s += ".listRequest (.lr) [Optional: item/username] see all the requests for all items, or a filtered version if an item or username is specified.\n\t Example: .listRequest or .listRequest Arroz pr .listRequest userName\n\n"
             s += ".deliverRequest (.dr) [ammount] [item] [requester] delivers the ammount if items to the requester.\n\t Example .dr Arroz 60 Onnion\n\n"
             s += ".closeRequest (.cr) [item] [requester]  close a request made for user 'requester'.\n\t Example: .closeRequest Arroz Onnion\n\n"
             s += ".backup to get a backup file in .csv format.\n\n"
