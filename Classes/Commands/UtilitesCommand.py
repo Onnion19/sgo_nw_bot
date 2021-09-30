@@ -121,7 +121,7 @@ class UtilitiesCommand(CommandBase):
                 await ctx.send(D_Utils.SendMessage("You have no permissions, ask Onnion or Yirak"))
 
         @self.CommandBot.command(aliases=['recoverClear'])
-        async def ClearAll(ctx, *args):
+        async def RecoverClearAll(ctx, *args):
             try:
                 self.Requests.InitFromFile(self.FileName+".clear");
             except IOError:
