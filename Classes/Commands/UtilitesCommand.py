@@ -16,6 +16,7 @@ class UtilitiesCommand(CommandBase):
         CommandBase.__init__(self)
         self.Requests = Requests()
         self.FileName = "SGO_NW_CraftRequests.csv"
+        self.Admins = ["Onnion", "Yirak","NYX トウキﾖウ"]
         self.Requests.InitFromFile(self.FileName)
         os.system("cp SGO_NW_CraftRequests.csv SGO_NW_CraftRequests.csv.backup")
 
@@ -112,12 +113,20 @@ class UtilitiesCommand(CommandBase):
 
         @self.CommandBot.command(aliases=['clear', 'cl'])
         async def ClearAll(ctx, *args):
-            if(ctx.author.name != "Onnion" and ctx.author.name != "Yirak"):
+            self.Requests.Serialize(self.FileName+".clear")
+            if(ctx.author.name in self.Admins):
+                self.Requests.WipeData()
+                await ctx.message.add_reaction('👍')
+            else:
                 await ctx.send(D_Utils.SendMessage("You have no permissions, ask Onnion or Yirak"))
-                return
 
-            self.Requests.WipeData()
-            await ctx.message.add_reaction('👍')
+        @self.CommandBot.command(aliases=['recoverClear'])
+        async def ClearAll(ctx, *args):
+            try:
+                self.Requests.InitFromFile(self.FileName+".clear");
+            except IOError:
+                print("Could not the file to load for recover the clear")
+
 
         @self.CommandBot.command(aliases=['man', 'ayuda','h'])
         async def DisplayHelp(ctx, *args):
