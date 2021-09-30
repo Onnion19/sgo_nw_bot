@@ -44,22 +44,24 @@ class RequestList:
         if(file is None):
             S_utils.SysPrint("Can't open file" + filePath, S_utils.PrintDecorators.ERROR)
             return
-        S_utils.SysPrint("Recover form file process starts");
+        S_utils.SysPrint("Recover form file process starts")
         self.Requests = {}
         currentItem = ""
         lines = file.readlines()
         for line in lines:
-            l = line.split()
-            S_utils.SysPrint(f'Parsing:\n{l}\n', S_utils.PrintDecorators.NOTATION);
-            if(len(l) > 0): # there is content
-                
-                if(l[0][0] != ','): #it's an item
+            line = line.strip()
+            l = line.split(',')
+            if(len(l) <= 0):
+                continue
+            S_utils.SysPrint(f'Parsing:\n{l}\n', S_utils.PrintDecorators.NOTATION)
+            if(l[0] != "" or len(l)>1): # there is content
+                if(len(l[0]) > 0): #it's an item
                     currentItem = l[0]
-                    S_utils.SysPrint(f'Item found:{currentItem}\n');
+                    S_utils.SysPrint(f'Item found:{currentItem}\n')
                 else: #is a request
-                    request = l[0].split(',')
-                    if(len(request) == 3):
-                        self.AddRequest(currentItem,request[1] , int(request[2]))
+                    request = l[1:]
+                    if(len(request) == 2):
+                        self.AddRequest(currentItem,request[0] , int(request[1]))
                     else:
                         S_utils.SysPrint(f'Error cant process {request}', S_utils.PrintDecorators.ERROR)
                     
@@ -116,6 +118,6 @@ class RequestList:
             for request in requestList:
                 if(request.GetRequester() == user):
                      s += "\n\t" + item + "\t" + str(request.GetQuantity())
-                     requestList.remove(request);
+                     requestList.remove(request)
                      break
         return s
