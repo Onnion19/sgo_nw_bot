@@ -44,16 +44,18 @@ class RequestList:
         if(file is None):
             S_utils.SysPrint("Can't open file" + filePath, S_utils.PrintDecorators.ERROR)
             return
-
+        S_utils.SysPrint("Recover form file process starts");
         self.Requests = {}
         currentItem = ""
         lines = file.readlines()
         for line in lines:
             l = line.split()
+            S_utils.SysPrint(f'Parsing:\n{l}\n', S_utils.PrintDecorators.NOTATION);
             if(len(l) > 0): # there is content
                 
                 if(l[0][0] != ','): #it's an item
                     currentItem = l[0]
+                    S_utils.SysPrint(f'Item found:{currentItem}\n');
                 else: #is a request
                     request = l[0].split(',')
                     if(len(request) == 3):
