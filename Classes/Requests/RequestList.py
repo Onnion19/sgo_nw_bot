@@ -107,3 +107,13 @@ class RequestList:
                     s += "\n\t" + item + "\t" + str(request.GetQuantity())
 
         return s
+
+    def RemoveAllUserRequests(self, user) -> str:
+        s = ""
+        for item , requestList in self.Requests.items():
+            for request in requestList:
+                if(request.GetRequester() == user):
+                     s += "\n\t" + item + "\t" + str(request.GetQuantity())
+                     requestList.remove(request);
+                     break
+        return s

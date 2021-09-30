@@ -69,6 +69,18 @@ class UtilitiesCommand(CommandBase):
             self.Requests.Serialize(self.FileName)
             await ctx.message.add_reaction('👍')
 
+        @self.CommandBot.command(aliases=['closeAllRequest','closeallrequest', 'cr_all'])
+        async def CloseAllRequest(ctx, *args):
+            if(len(args) < 1):
+                await ctx.send(D_Utils.SendMessage("Missing user name"))
+                return
+
+            requester = S_Utils.TupleToString(args[0:])
+            s = self.Requests.RemoveAllUserRequests(requester)
+            self.Requests.Serialize(self.FileName)
+            await ctx.send(D_Utils.SendMessage("Removed Requests:\n\t"+s))
+            await ctx.message.add_reaction('👍')
+
         @self.CommandBot.command(aliases=['deliverRequest', 'deliverrequest', 'dr'])
         async def DeliverRequest(ctx, *args):
             if(len(args) < 3):
@@ -113,6 +125,7 @@ class UtilitiesCommand(CommandBase):
             s += ".listRequest (.lr) [Optional: item/username] see all the requests for all items, or a filtered version if an item or username is specified.\n\t Example: .listRequest or .listRequest Arroz pr .listRequest userName\n\n"
             s += ".deliverRequest (.dr) [ammount] [item] [requester] delivers the ammount if items to the requester.\n\t Example .dr Arroz 60 Onnion\n\n"
             s += ".closeRequest (.cr) [item] [requester]  close a request made for user 'requester'.\n\t Example: .closeRequest Arroz Onnion\n\n"
+            s += ".closeAllRequest (.car) [requester] Closes all request made by the requester.\n\t Examepl: .closeAllRequest Onnion\n\n"
             s += ".backup to get a backup file in .csv format.\n\n"
             s += ".recover [last] to recover data as a rollback. By default it recovers from the point when the bot was booted last time. If Last parameter is specified, it will recover from the last command.\n\t Example: .recover or .recover last\n\n"
             s += ".clear wipes all data\n"
