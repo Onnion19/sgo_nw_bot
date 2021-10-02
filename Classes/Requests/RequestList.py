@@ -120,4 +120,8 @@ class RequestList:
                      s += "\n\t" + item + "\t" + str(request.GetQuantity())
                      requestList.remove(request)
                      break
+
+        for item , requestList in dict(self.Requests).items():
+            if(len(requestList) <= 0):
+                self.Requests.pop(item);
         return s

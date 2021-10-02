@@ -75,27 +75,27 @@ Then use:
 
 ### Clear Request
 
-.closeRequest (.cr) [item] [requester]: fully removes a request from a user on a given item.
+.closeRequest (.cr) [item] : fully removes a request from the user for a given item
 
 #### usage
 
 ```
-.cr Shrimps UserName
+.cr Shrimps
 ```
 
 ### Close All Requests
 
-.closeAllRequest (.car) [requester]: Removes all the request by made the requester.
+.closeAllRequest (.car) : Removes all the request by made the requester.
 
 #### usage
 
 ```
-.car UserName
+.cr_all
 ```
 
 ### List Requests
 
-.listRequests (.lr) [OPTIONAL item] List either all the requests or the request for a given item if specified.
+.listRequests (.lr) [OPTIONAL item/username] List either all the requests or the request for a given item or username if specified.
 
 #### usage
 
