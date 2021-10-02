@@ -18,7 +18,6 @@ class UtilitiesCommand(CommandBase):
         self.FileName = "SGO_NW_CraftRequests.csv"
         self.Admins = ["Onnion", "Yirak","NYX トウキﾖウ"]
         self.Requests.InitFromFile(self.FileName)
-        S_Utils.CopyFile(self.FileName, self.FileName + ".backup")
 
     def InitializeModule(self):
         CommandBase.InitializeModule(self)
