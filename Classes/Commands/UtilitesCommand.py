@@ -18,7 +18,7 @@ class UtilitiesCommand(CommandBase):
         self.FileName = "SGO_NW_CraftRequests.csv"
         self.Admins = ["Onnion", "Yirak","NYX トウキﾖウ"]
         self.Requests.InitFromFile(self.FileName)
-        os.system("cp SGO_NW_CraftRequests.csv SGO_NW_CraftRequests.csv.backup")
+        S_Utils.CopyFile(self.FileName, self.FileName + ".backup")
 
     def InitializeModule(self):
         CommandBase.InitializeModule(self)
@@ -56,6 +56,7 @@ class UtilitiesCommand(CommandBase):
 
         @self.CommandBot.command(aliases=['backup','BackUp','bu','file'])
         async def GetFile(ctx, *args):
+                S_Utils.CopyFile(self.FileName, self.FileName + ".backup")
                 await ctx.send(file = discord.File(self.FileName))
 
         @self.CommandBot.command(aliases=['closeRequest','closerequest', 'cr'])

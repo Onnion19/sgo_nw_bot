@@ -20,6 +20,8 @@ def InitializeSystemUtils():
 def SysPrint(Text, InSysDecorators=PrintDecorators.DEFAULT):
     print(f'{InSysDecorators[0]}{InSysDecorators[1]}{Text}')
 
+def CopyFile(From, To):
+    os.system(f"cp {From} {To}")
 
 def TupleToString(t, separator=" ") -> str:
    return  separator.join(t);
