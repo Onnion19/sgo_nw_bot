@@ -31,7 +31,7 @@ class RequestList:
         return s
 
     def Serialize(self, filePath):
-        S_Utils.CopyFile(filePath, filePath + ".tmp")
+        S_utils.CopyFile(filePath, filePath + ".tmp")
         file = open(filePath, 'w+', encoding="utf-8")
         if(file is None):
             S_utils.SysPrint("Can't open file" + filePath, S_utils.PrintDecorators.ERROR)
@@ -54,7 +54,7 @@ class RequestList:
             if(len(l) <= 0):
                 continue
             S_utils.SysPrint(f'Parsing:\n{l}\n', S_utils.PrintDecorators.NOTATION)
-            if(l[0] != "" or len(l)>1): # there is content
+            if(l[0] != "" or len(l) > 1): # there is content
                 if(len(l[0]) > 0): #it's an item
                     currentItem = l[0]
                     S_utils.SysPrint(f'Item found:{currentItem}\n')

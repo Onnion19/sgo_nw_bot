@@ -110,6 +110,7 @@ class UtilitiesCommand(CommandBase):
                 path += ".backup"
 
             self.Requests.InitFromFile(path)
+            self.Requests.Serialize(self.FileName)
             await ctx.message.add_reaction('👍')
 
         @self.CommandBot.command(aliases=['clear', 'cl'])
@@ -119,7 +120,7 @@ class UtilitiesCommand(CommandBase):
                 self.Requests.WipeData()
                 await ctx.message.add_reaction('👍')
             else:
-                await ctx.send(D_Utils.SendMessage("You have no permissions, ask Onnion or Yirak"))
+                await ctx.send(D_Utils.SendMessage("You have no permissions"))
 
         @self.CommandBot.command(aliases=['recoverClear'])
         async def RecoverClearAll(ctx, *args):
